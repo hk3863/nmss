@@ -2,8 +2,6 @@
 
 A wearable assistive device submitted to the **NMSS Universal Design for Inclusion Program** — a design competition by the [National Multiple Sclerosis Society UAE](https://www.nationalmssociety.ae/en/) that challenges university students to build innovative assistive technology solutions for People of Determination in the UAE.
 
-**Focus Area:** Communication — addressing challenges faced by individuals with hearing impairments.
-
 ---
 
 ## The Problem
