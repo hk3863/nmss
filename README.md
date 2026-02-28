@@ -82,8 +82,3 @@ smart-badge/
 **Software**
 - Arduino IDE with `ArduinoBLE` and `ld2410` libraries installed
 - Chrome or Edge browser on an **Android** phone (iOS does not support Web Bluetooth or the Vibration API)
-
----
-
-*Submitted to the NMSS Universal Design for Inclusion Program — August 2025 cohort.*
-*Contact: universal.design@nationalmssociety.ae*
