@@ -63,16 +63,6 @@ The NMSS program evaluates submissions on four criteria. Here's how Smart Badge 
 
 **Scalability** — The core system (radar + BLE + vibration) can be extended to detect multiple alert types (e.g. loud sounds, doorbells, alarms) and adapted for other conditions such as MS-related reduced spatial awareness.
 
-## Project Structure
-
-```
-smart-badge/
-├── distance-vibration/
-│   ├── distance_sensor.ino   # Arduino: radar sensing + BLE broadcasting
-│   └── badge-connect.js      # Phone: BLE connection + vibration logic
-└── README.md
-```
-
 ## Requirements
 
 **Hardware**
