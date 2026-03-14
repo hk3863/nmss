@@ -72,8 +72,9 @@ async function connectBLE() {
   try {
     alert('Scanning...');
     const device = await navigator.bluetooth.requestDevice({
-  acceptAllDevices: true,
-  optionalServices: ['19b10000-e8f2-537e-4f6c-d104768a1214']
+  filters: [{ 
+    services: ['19b10000-e8f2-537e-4f6c-d104768a1214'] 
+  }]
 });
     alert('Found: ' + device.name);
 
@@ -123,12 +124,19 @@ function stopVibration() {
 }
 
 function buzz() {
-  //navigator.vibrate(VIB_PULSE_MS); // 아이폰은 버즈 안돼서 오디오로 테스트 대체, 안드로이드 할때 이거 uncomment then comment out the audio code below 
-  const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  osc.connect(ctx.destination);
-  osc.frequency.value = 440;
-  osc.start();
-  osc.stop(ctx.currentTime + 0.1);
+  // 아이폰과 안드로이드 구분하여 처리하는 방법으로 바꾸었습니다
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+  if (isIOS) {
+    // iPhone: use audio beep
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    osc.connect(ctx.destination);
+    osc.frequency.value = 440;
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } else {
+    // Android: use vibration
+    navigator.vibrate(VIB_PULSE_MS);
+  }
 }
