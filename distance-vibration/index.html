@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Badge</title>
+</head>
+<body>
+  <h1>Smart Badge</h1>
+  <button onclick="connectBLE()">Connect to Badge</button>
+  <button onclick="startMicMonitor()">Start Decibel Monitor</button>
+  <button onclick="stopMicMonitor()">Stop Decibel Monitor</button>
+
+  <p>Current dB: <span id="dbDisplay">--</span></p>   
+  <p>Status: <span id="status">--</span></p>      
+
+  <p>Threshold: <input type="range" min="50" max="90" value="70"
+    oninput="DB_THRESHOLD = +this.value; document.getElementById('dbval').textContent = this.value">
+    <span id="dbval">70</span> dB</p>
+
+  <script src="badge-connect.js"></script>
+</body>
+</html>
+
+```
+
+Then right click `index.html` in VS Code and click **"Open with Live Server"**.
+
+On your phone go to:
+```
+http://10.20.60.158:5500/index.html
