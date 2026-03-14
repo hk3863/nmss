@@ -14,6 +14,7 @@ const DB_VIB_MS    = 150;
 let audioContext = null;
 let analyser = null;
 let dbTimer = null;
+let bleConnected = false;
 
 
 // ── Mic Monitor ───────────────────────────────────────────
@@ -50,7 +51,7 @@ function checkDecibels() {
 
   document.getElementById('dbDisplay').textContent = db.toFixed(1);  
 
-  if (db >= DB_THRESHOLD) {
+  if (db >= DB_THRESHOLD && bleConnected) {
     document.getElementById('status').textContent = '🔴 LOUD! Vibrating...';  
     buzz(); 
   } else {
@@ -91,6 +92,9 @@ async function connectBLE() {
     });
 
     alert('Connected!');
+
+    bleConnected = true;
+    startMicMonitor();
 
   } catch (e) {
     alert('Error: ' + e.message);
