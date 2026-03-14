@@ -72,10 +72,7 @@ async function connectBLE() {
   try {
     alert('Scanning...');
     const device = await navigator.bluetooth.requestDevice({
-  filters: [
-    { name: 'Smart_Badge' },
-    { services: ['19b10000-e8f2-537e-4f6c-d104768a1214'] }
-  ],
+  acceptAllDevices: true,
   optionalServices: ['19b10000-e8f2-537e-4f6c-d104768a1214']
 });
     alert('Found: ' + device.name);
