@@ -6,7 +6,7 @@ import { useBleMic } from "../contexts/BleMicContext";
 
 export default function Link8View() {
   const navigate = useNavigate();
-  const { isConnected, distance } = useBleMic();
+  const { isConnected, distance, distanceTestPassed, setDistanceTestPassed, audioTestPassed } = useBleMic();
   const failureTimerRef = useRef<number | null>(null);
   const successTimerRef = useRef<number | null>(null);
 
@@ -21,7 +21,12 @@ export default function Link8View() {
       // Start success timer if not already running
       if (!successTimerRef.current) {
         successTimerRef.current = window.setTimeout(() => {
-          navigate("/map"); // 🎉 Success: sustained distance for 5s
+          setDistanceTestPassed(true);
+          if (audioTestPassed) {
+            navigate("/link9"); // ✅ Both done
+          } else {
+            navigate("/link3"); // Send back to pick audio test
+          }
         }, 5000);
       }
     } else {

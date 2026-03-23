@@ -10,6 +10,8 @@ import Link4View from "./views/Link4View";
 import Link5View from "./views/Link5View";
 import Link6View from "./views/Link6View";
 import Link8View from "./views/Link8View";
+import Link7View from "./views/Link7View";
+import Link9View from "./views/Link9View";
 import ProfileView from "./views/ProfileView";
 
 export const router = createBrowserRouter([
@@ -26,7 +28,9 @@ export const router = createBrowserRouter([
       { path: "link4", Component: Link4View },
       { path: "link5", Component: Link5View },
       { path: "link6", Component: Link6View },
+      { path: "link7", Component: Link7View },
       { path: "link8", Component: Link8View },
+      { path: "link9", Component: Link9View },
       { path: "user", Component: ProfileView },
     ],
   },

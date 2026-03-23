@@ -7,7 +7,7 @@ import { useBleMic } from "../contexts/BleMicContext";
 
 export default function Link5View() {
   const navigate = useNavigate();
-  const { startMicMonitor, stopMicMonitor, decibels, isLoud } = useBleMic();
+  const { startMicMonitor, stopMicMonitor, decibels, isLoud, setAudioTestPassed } = useBleMic();
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
@@ -31,6 +31,16 @@ export default function Link5View() {
       return () => clearTimeout(timer);
     }
   }, [hasStarted, isLoud, navigate]);
+
+  useEffect(() => {
+  if (hasStarted && isLoud) {
+    const timer = setTimeout(() => {
+      setAudioTestPassed(true);
+      navigate("/link6");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }
+}, [hasStarted, isLoud, navigate, setAudioTestPassed]);
 
   // Normalize decibels to a 0-1 scale for animations (assuming 30dB min, 100dB max)
   const normalizedIntensity = Math.max(0, Math.min(1, (decibels - 30) / 70));

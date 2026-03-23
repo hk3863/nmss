@@ -16,6 +16,11 @@ interface BleMicContextType {
   disconnectBLE: () => void;
   startMicMonitor: () => Promise<void>;
   stopMicMonitor: () => void;
+  audioTestPassed: boolean;
+  distanceTestPassed: boolean;
+  setAudioTestPassed: (v: boolean) => void;
+  setDistanceTestPassed: (v: boolean) => void;
+  resetTestResults: () => void;  // ← add this
 }
 
 const BleMicContext = createContext<BleMicContextType | undefined>(undefined);
@@ -26,6 +31,9 @@ export function BleMicProvider({ children }: { children: ReactNode }) {
   const [decibels, setDecibels] = useState(0);
   const [isLoud, setIsLoud] = useState(false);
   const [distance, setDistance] = useState(0);
+  const [audioTestPassed, setAudioTestPassed] = useState(false);
+  const [distanceTestPassed, setDistanceTestPassed] = useState(false);
+
 
   // Refs for background processes
   const deviceRef = useRef<any>(null);
@@ -321,10 +329,16 @@ export function BleMicProvider({ children }: { children: ReactNode }) {
     setIsLoud(false);
   }, []);
 
+  const resetTestResults = useCallback(() => {
+  setAudioTestPassed(false);
+  setDistanceTestPassed(false);
+}, []);
+
+
   return (
     <BleMicContext.Provider value={{
       isConnected, isMicMonitoring, decibels, isLoud, distance,
-      connectBLE, disconnectBLE, startMicMonitor, stopMicMonitor
+      connectBLE, disconnectBLE, startMicMonitor, stopMicMonitor, audioTestPassed, distanceTestPassed, setAudioTestPassed, setDistanceTestPassed, resetTestResults
     }}>
       {children}
     </BleMicContext.Provider>

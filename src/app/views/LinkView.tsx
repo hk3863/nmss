@@ -5,10 +5,10 @@ import { useBleMic } from "../contexts/BleMicContext";
 
 export default function LinkView() {
   const navigate = useNavigate();
-  const { connectBLE } = useBleMic();
+  const { connectBLE, resetTestResults } = useBleMic();
 
   const handleConnect = async () => {
-    // --- COMMENTED OUT FOR TESTING ---
+    resetTestResults();
     try {
       await connectBLE();
       navigate('/link2');
@@ -16,9 +16,6 @@ export default function LinkView() {
       console.error(e);
       navigate('/link4');
     }
-    
-    // BYPASS: Jump straight to the Decibel Monitor (link5)
-    //navigate('/link5');
   };
 
   return (
