@@ -9,16 +9,16 @@ export default function LinkView() {
 
   const handleConnect = async () => {
     // --- COMMENTED OUT FOR TESTING ---
-    // try {
-    //   await connectBLE();
-    //   navigate('/link2');
-    // } catch (e) {
-    //   console.error(e);
-    //   navigate('/link4');
-    // }
+    try {
+      await connectBLE();
+      navigate('/link2');
+    } catch (e) {
+      console.error(e);
+      navigate('/link4');
+    }
     
     // BYPASS: Jump straight to the Decibel Monitor (link5)
-    navigate('/link5');
+    //navigate('/link5');
   };
 
   return (

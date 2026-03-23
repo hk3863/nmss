@@ -91,7 +91,7 @@ export default function Link() {
           </svg>
         </div>
       </div>
-      <p className="-translate-x-1/2 absolute font-['Blinker:Bold',sans-serif] h-auto leading-[normal] left-[195px] not-italic text-[20px] text-black text-center top-[340px] tracking-[1.4px] w-[138px]">Linked successfully</p>
+      <p className="-translate-x-1/2 absolute font-['Blinker:Bold',sans-serif] h-auto leading-[normal] left-[195px] not-italic text-[20px] text-black text-center top-[340px] tracking-[1.4px] w-[138px]">Device connected</p>
       <p className="-translate-x-1/2 absolute decoration-solid font-['Blinker:Regular',sans-serif] h-auto leading-[normal] left-[195px] not-italic text-[16px] text-black text-center top-[400px] tracking-[1.4px] underline w-[166px]">Test audio</p>
       <p className="-translate-x-1/2 absolute decoration-solid font-['Blinker:Regular',sans-serif] h-auto leading-[normal] left-[196px] not-italic text-[16px] text-black text-center top-[430px] tracking-[1.4px] underline w-[166px]">Test distance</p>
       <p className="-translate-x-1/2 absolute font-['Blinker:Regular',sans-serif] h-auto leading-[normal] left-[196px] not-italic text-[16px] text-black text-center top-[470px] tracking-[1.4px] w-[72px]">Cancel</p>
