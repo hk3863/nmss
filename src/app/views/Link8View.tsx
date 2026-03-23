@@ -6,31 +6,24 @@ import { useBleMic } from "../contexts/BleMicContext";
 
 export default function Link8View() {
   const navigate = useNavigate();
-  const { isConnected, distance, distanceTestPassed, setDistanceTestPassed, audioTestPassed } = useBleMic();
+  const { isConnected, distance, setDistanceTestPassed, audioTestPassed } = useBleMic();
   const failureTimerRef = useRef<number | null>(null);
   const successTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (distance > 0) {
-      // Distance is being received — cancel failure timer
       if (failureTimerRef.current) {
         clearTimeout(failureTimerRef.current);
         failureTimerRef.current = null;
       }
 
-      // Start success timer if not already running
       if (!successTimerRef.current) {
         successTimerRef.current = window.setTimeout(() => {
           setDistanceTestPassed(true);
-          if (audioTestPassed) {
-            navigate("/link9"); // ✅ Both done
-          } else {
-            navigate("/link3"); // Send back to pick audio test
-          }
+          navigate(audioTestPassed ? "/link9" : "/link7");
         }, 5000);
       }
     } else {
-      // No distance — cancel success timer and (re)start failure timer
       if (successTimerRef.current) {
         clearTimeout(successTimerRef.current);
         successTimerRef.current = null;
@@ -42,12 +35,15 @@ export default function Link8View() {
         }, 10000);
       }
     }
+  }, [distance, navigate, audioTestPassed, setDistanceTestPassed]);
 
+  // Separate unmount-only cleanup — NOT in the distance effect
+  useEffect(() => {
     return () => {
       if (failureTimerRef.current) clearTimeout(failureTimerRef.current);
       if (successTimerRef.current) clearTimeout(successTimerRef.current);
     };
-  }, [distance, navigate]);
+  }, []);
 
   return (
     <MapNavWrapper>
@@ -70,7 +66,6 @@ export default function Link8View() {
           </span>
         )}
       </div>
-      {/* Cancel button */}
       <ReactRouterLink to="/map" className="absolute left-[92px] top-[456px] w-[206px] h-[51px] z-20 cursor-pointer" />
     </MapNavWrapper>
   );
