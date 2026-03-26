@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link as ReactRouterLink, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { motion } from "motion/react";
-import Link5 from "../../imports/Link5";
+import { Volume2 } from "lucide-react";
 import MapNavWrapper from "../components/MapNavWrapper";
+import { PairingCard } from "../components/PairingCard";
+import { ScreenShell } from "../components/ScreenShell";
+import { Button } from "../components/ui/button";
 import { useBleMic } from "../contexts/BleMicContext";
 
 export default function Link5View() {
@@ -17,7 +20,7 @@ export default function Link5View() {
         console.error(e);
         navigate("/map");
       });
-      
+
     return () => {
       stopMicMonitor();
     };
@@ -25,104 +28,84 @@ export default function Link5View() {
 
   useEffect(() => {
     if (hasStarted && isLoud) {
-      const timer = setTimeout(() => {
-        navigate("/link6"); // Go to success screen
+      const timer = window.setTimeout(() => {
+        setAudioTestPassed(true);
+        navigate("/link6");
       }, 1000);
-      return () => clearTimeout(timer);
+      return () => window.clearTimeout(timer);
     }
-  }, [hasStarted, isLoud, navigate]);
+  }, [hasStarted, isLoud, navigate, setAudioTestPassed]);
 
-  useEffect(() => {
-  if (hasStarted && isLoud) {
-    const timer = setTimeout(() => {
-      setAudioTestPassed(true);
-      navigate("/link6");
-    }, 1000);
-    return () => clearTimeout(timer);
-  }
-}, [hasStarted, isLoud, navigate, setAudioTestPassed]);
-
-  // Normalize decibels to a 0-1 scale for animations (assuming 30dB min, 100dB max)
   const normalizedIntensity = Math.max(0, Math.min(1, (decibels - 30) / 70));
-  
-  // Dynamic colors based on loudness
-  const ringColor = isLoud ? "rgba(255, 59, 48, " : "rgba(10, 132, 255, ";
+  const ringColor = isLoud ? "rgba(251, 113, 133, " : "rgba(14, 165, 233, ";
 
   return (
     <MapNavWrapper>
-      <Link5 />
-      
-      {/* dB Overlay Floating Widget */}
-      {hasStarted && (
-        <div className="absolute left-1/2 top-[170px] -translate-x-1/2 flex flex-col items-center justify-center z-30 pointer-events-none">
-          {/* Pulsing visualizer */}
-          <div className="relative w-32 h-32 flex items-center justify-center">
-            {/* Outer rings */}
+      <ScreenShell
+        eyebrow="Audio Test"
+        title="Make a loud sound"
+        description="The same test logic is running underneath. This is a more polished visualization."
+        className="justify-end pt-10"
+      >
+        <div className="flex justify-center py-2">
+          <div className="relative flex h-40 w-40 items-center justify-center">
             {[1, 2, 3].map((ring) => (
               <motion.div
                 key={ring}
                 className="absolute rounded-full"
                 style={{
-                  border: `2px solid ${ringColor}${0.5 / ring})`,
-                  backgroundColor: `${ringColor}${0.1 / ring})`
+                  border: `2px solid ${ringColor}${0.52 / ring})`,
+                  backgroundColor: `${ringColor}${0.1 / ring})`,
                 }}
                 animate={{
-                  width: `${100 + (normalizedIntensity * 150 * ring)}%`,
-                  height: `${100 + (normalizedIntensity * 150 * ring)}%`,
-                  opacity: [0.3, 0.8, 0.3]
+                  width: `${100 + normalizedIntensity * 140 * ring}%`,
+                  height: `${100 + normalizedIntensity * 140 * ring}%`,
+                  opacity: [0.25, 0.9, 0.25],
                 }}
                 transition={{
-                  width: { duration: 0.1, ease: "easeOut" },
-                  height: { duration: 0.1, ease: "easeOut" },
-                  opacity: { duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: ring * 0.2 }
+                  width: { duration: 0.14, ease: "easeOut" },
+                  height: { duration: 0.14, ease: "easeOut" },
+                  opacity: { duration: 1.4, repeat: Infinity, ease: "easeInOut", delay: ring * 0.16 },
                 }}
               />
             ))}
-            
-            {/* Center Core */}
-            <motion.div 
-              className="absolute z-10 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-2xl backdrop-blur-md"
+
+            <motion.div
+              className="absolute z-10 flex h-28 w-28 flex-col items-center justify-center rounded-full text-white shadow-2xl"
               style={{
-                background: isLoud 
-                  ? 'linear-gradient(135deg, #ff3b30, #ff9500)' 
-                  : 'linear-gradient(135deg, #2c2c2e, #1c1c1e)',
-                boxShadow: `0 0 ${20 + normalizedIntensity * 40}px ${ringColor}${0.6})`
+                background: isLoud
+                  ? "linear-gradient(135deg, #fb7185, #f97316)"
+                  : "linear-gradient(135deg, #0f172a, #155e75)",
+                boxShadow: `0 0 ${20 + normalizedIntensity * 40}px ${ringColor}0.42)`,
               }}
-              animate={{
-                scale: 1 + (normalizedIntensity * 0.2)
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              animate={{ scale: 1 + normalizedIntensity * 0.16 }}
+              transition={{ type: "spring", stiffness: 280, damping: 20 }}
             >
-              <span className="text-white text-3xl font-black tracking-tighter">
-                {Math.round(decibels)}
-              </span>
-              <span className="text-white/70 text-xs font-bold uppercase tracking-widest">
+              <Volume2 className="mb-2 size-5 text-white/80" />
+              <span className="text-3xl font-black tracking-tight">{Math.round(decibels)}</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-white/65">
                 dB
               </span>
             </motion.div>
           </div>
-
-          {/* Loudness Indicator Text */}
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ 
-              opacity: isLoud ? 1 : 0,
-              y: isLoud ? 0 : 10
-            }}
-            className="mt-8 bg-white/95 backdrop-blur text-[#ff3b30] px-5 py-2 rounded-full text-sm font-bold shadow-xl border border-white/20 flex items-center gap-2"
-          >
-            <motion.div 
-              animate={{ scale: [1, 1.5, 1] }} 
-              transition={{ repeat: Infinity, duration: 0.5 }}
-              className="w-2 h-2 rounded-full bg-[#ff3b30]"
-            />
-            Loud Noise!
-          </motion.div>
         </div>
-      )}
 
-      {/* Cancel button mask - invisible clickable area */}
-      <ReactRouterLink to="/map" className="absolute left-[92px] top-[456px] w-[206px] h-[51px] z-20 cursor-pointer" />
+        {hasStarted ? (
+          <PairingCard
+            badge="Listening"
+            title={isLoud ? "Trigger detected" : "Waiting for sound"}
+            description={
+              isLoud
+                ? "The audio threshold has been reached and the test is moving forward."
+                : "Clap, speak loudly, or make a short sharp noise near the device."
+            }
+          />
+        ) : null}
+
+        <Button className="h-12 rounded-[22px] border-white/70 bg-white/75 text-slate-700 hover:bg-white" variant="outline" onClick={() => navigate("/map")}>
+          Cancel
+        </Button>
+      </ScreenShell>
     </MapNavWrapper>
   );
 }

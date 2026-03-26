@@ -4,8 +4,11 @@
 #include <BLE2902.h>
 #include <ld2410.h>
 
-#define RX_PIN D7
-#define TX_PIN D6
+// Use safe UART-capable GPIOs on common ESP32 dev boards.
+// Avoid GPIO6-GPIO11 (often exposed as D6/D7 on some boards) because they are
+// commonly connected to the onboard flash and can break boot/normal operation.
+#define RX_PIN 16
+#define TX_PIN 17
 #define RADAR_BAUD 256000
 #define DANGER_DIST 200
 
@@ -32,9 +35,10 @@ class MyServerCallbacks : public BLEServerCallbacks {
   }
 };
 
-void setup() {
+void setup() 
+{
   Serial.begin(115200);
-  delay(2000);
+  delay(1000);
 
   // Radar setup
   Serial1.begin(RADAR_BAUD, SERIAL_8N1, RX_PIN, TX_PIN);
@@ -43,7 +47,7 @@ void setup() {
   Serial.println("Radar started");
 
   // BLE setup
-  BLEDevice::init("Smart_Badge");
+  BLEDevice::init("Aman Hiss");
   BLEServer* pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -60,9 +64,16 @@ void setup() {
   pService->start();
   BLEAdvertising* pAdvertising = BLEDevice::getAdvertising();
   pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+#ifdef ESP32
+  pAdvertising->setMinPreferred(0x06);
+  pAdvertising->setMinPreferred(0x12);
+#endif
   BLEDevice::startAdvertising();
 
   Serial.println("Bluetooth active. Waiting for phone connection...");
+  Serial.printf("Advertising as: %s\n", BLEDevice::getDeviceName().c_str());
+  Serial.printf("Radar UART pins RX=%d TX=%d\n", RX_PIN, TX_PIN);
 }
 
 void loop() {

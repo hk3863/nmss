@@ -1,7 +1,7 @@
 import React from "react";
 
 export function PhoneIcon({ active }: { active?: boolean }) {
-  const color = active ? "#222222" : "#A8A8A8";
+  const color = active ? "#0f766e" : "#7c8798";
   return (
     <svg width="37" height="33" viewBox="0 0 37 33" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
       {active && (
@@ -26,7 +26,7 @@ export function PhoneIcon({ active }: { active?: boolean }) {
 }
 
 export function SwitchIcon({ active }: { active?: boolean }) {
-  const color = active ? "#222222" : "#A8A8A8";
+  const color = active ? "#0f766e" : "#7c8798";
   return (
     <svg width="33" height="33" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
       {active && (
@@ -52,7 +52,7 @@ export function SwitchIcon({ active }: { active?: boolean }) {
 }
 
 export function PinIcon({ active }: { active?: boolean }) {
-  const color = active ? "#222222" : "#A8A8A8";
+  const color = active ? "#0f766e" : "#7c8798";
   return (
     <svg width="37" height="43" viewBox="0 0 37 43" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
       {active && (
@@ -78,7 +78,7 @@ export function PinIcon({ active }: { active?: boolean }) {
 }
 
 export function UserIcon({ active }: { active?: boolean }) {
-  const color = active ? "#222222" : "#A8A8A8";
+  const color = active ? "#0f766e" : "#7c8798";
   return (
     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
       {active && (

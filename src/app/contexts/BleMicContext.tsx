@@ -137,7 +137,7 @@ export function BleMicProvider({ children }: { children: ReactNode }) {
     
     try {
       const device = await nav.bluetooth.requestDevice({
-        filters: [{ name: 'Smart_Badge' }],
+        filters: [{ name: 'Aman Hiss' }],
         optionalServices: [SERVICE_UUID]
       });
 

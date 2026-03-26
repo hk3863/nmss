@@ -1,4 +1,4 @@
-# Smart Badge
+# Aman Hiss
 
 A wearable assistive device submitted to the **NMSS Universal Design for Inclusion Program** — a design competition by the [National Multiple Sclerosis Society UAE](https://www.nationalmssociety.ae/en/) that challenges university students to build innovative assistive technology solutions for People of Determination in the UAE.
 
@@ -12,7 +12,7 @@ Turning around to check constantly is impractical. Existing solutions are often 
 
 ## The Solution
 
-Smart Badge is a small device that clips to the **inside back** of a person's clothing. It silently monitors the surrounding environment and alerts the wearer through **vibrations** — a sense they can rely on regardless of hearing ability.
+Aman Hiss is a small device that clips to the **inside back** of a person's clothing. It silently monitors the surrounding environment and alerts the wearer through **vibrations** — a sense they can rely on regardless of hearing ability.
 
 - Someone approaching from behind? → The badge vibrates faster the closer they get
 - Loud sound nearby? → Vibration alert
@@ -51,7 +51,7 @@ The closer the approaching person or object, the faster and more urgent the vibr
 
 ## Design Criteria Alignment
 
-The NMSS program evaluates submissions on four criteria. Here's how Smart Badge addresses each:
+The NMSS program evaluates submissions on four criteria. Here's how Aman Hiss addresses each:
 
 **Impact** — Directly improves the daily safety and independence of deaf and hard-of-hearing individuals, a group that faces real risks from undetected environmental hazards.
 

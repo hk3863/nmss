@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Link as ReactRouterLink, useNavigate } from "react-router";
-import Link8 from "../../imports/Link8";
+import { useNavigate } from "react-router";
+import { motion } from "motion/react";
+import { AlertTriangle, BluetoothConnected, Footprints } from "lucide-react";
 import MapNavWrapper from "../components/MapNavWrapper";
+import { PairingCard } from "../components/PairingCard";
+import { ScreenShell } from "../components/ScreenShell";
+import { Button } from "../components/ui/button";
 import { useBleMic } from "../contexts/BleMicContext";
 
 export default function Link8View() {
@@ -13,7 +17,7 @@ export default function Link8View() {
   useEffect(() => {
     if (distance > 0) {
       if (failureTimerRef.current) {
-        clearTimeout(failureTimerRef.current);
+        window.clearTimeout(failureTimerRef.current);
         failureTimerRef.current = null;
       }
 
@@ -25,7 +29,7 @@ export default function Link8View() {
       }
     } else {
       if (successTimerRef.current) {
-        clearTimeout(successTimerRef.current);
+        window.clearTimeout(successTimerRef.current);
         successTimerRef.current = null;
       }
 
@@ -35,38 +39,78 @@ export default function Link8View() {
         }, 10000);
       }
     }
-  }, [distance, navigate, audioTestPassed, setDistanceTestPassed]);
+  }, [audioTestPassed, distance, navigate, setDistanceTestPassed]);
 
-  // Separate unmount-only cleanup — NOT in the distance effect
   useEffect(() => {
     return () => {
-      if (failureTimerRef.current) clearTimeout(failureTimerRef.current);
-      if (successTimerRef.current) clearTimeout(successTimerRef.current);
+      if (failureTimerRef.current) {
+        window.clearTimeout(failureTimerRef.current);
+      }
+      if (successTimerRef.current) {
+        window.clearTimeout(successTimerRef.current);
+      }
     };
   }, []);
 
   return (
     <MapNavWrapper>
-      <Link8 />
-      <div className="absolute left-1/2 top-[410px] -translate-x-1/2 flex flex-col items-center justify-center z-30 pointer-events-none">
-        {isConnected ? (
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-[#34c759] font-bold bg-white px-4 py-2 rounded-full shadow-md animate-pulse">
-              Monitoring Distance...
-            </span>
-            {distance > 0 && (
-              <span className="text-[#ff3b30] font-bold bg-white px-4 py-2 rounded-full shadow-md animate-bounce">
-                Moving! Level: {distance}
-              </span>
-            )}
+      <ScreenShell
+        eyebrow="Distance Test"
+        title="Move with the badge"
+        description="The distance logic is unchanged. This is a redesigned live-monitoring state."
+        className="justify-end pt-10"
+      >
+        <div className="flex justify-center py-2">
+          <motion.div
+            animate={{ scale: distance > 0 ? [1, 1.08, 1] : 1 }}
+            transition={{ repeat: distance > 0 ? Infinity : 0, duration: 1.35 }}
+            className="flex size-32 items-center justify-center rounded-full border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(242,247,248,0.76))] shadow-[0_18px_40px_rgba(15,23,42,0.12)] backdrop-blur-xl"
+          >
+            <div className="flex size-24 items-center justify-center rounded-full bg-[linear-gradient(135deg,#0f766e,#38bdf8)] text-white shadow-[0_14px_28px_rgba(15,118,110,0.24)]">
+              <Footprints className="size-9" />
+            </div>
+          </motion.div>
+        </div>
+
+        <PairingCard
+          badge={isConnected ? "Monitoring" : "Disconnected"}
+          title={
+            isConnected
+              ? distance > 0
+                ? "Distance detected"
+                : "Waiting for movement"
+              : "Badge not connected"
+          }
+          description={
+            isConnected
+              ? distance > 0
+                ? `Current distance signal: ${distance}. Keep moving for a few seconds.`
+                : "No distance value yet. Trigger movement to continue the test."
+              : "Reconnect the badge first so the app can continue."
+          }
+        >
+          <div className="rounded-[24px] border border-white/70 bg-white/74 p-4">
+            <div className="flex items-start gap-3">
+              {isConnected ? (
+                <BluetoothConnected className="mt-0.5 size-5 shrink-0 text-sky-700" />
+              ) : (
+                <AlertTriangle className="mt-0.5 size-5 shrink-0 text-rose-600" />
+              )}
+              <p className="text-sm leading-6 text-slate-600">
+                {isConnected
+                  ? distance > 0
+                    ? "The app will automatically continue once the distance stream remains active."
+                    : "If nothing changes after 10 seconds, the flow will return to retry."
+                  : "No live Bluetooth connection is available for the test right now."}
+              </p>
+            </div>
           </div>
-        ) : (
-          <span className="text-[#ff3b30] font-bold bg-white px-4 py-2 rounded-full shadow-md">
-            Not Connected
-          </span>
-        )}
-      </div>
-      <ReactRouterLink to="/map" className="absolute left-[92px] top-[456px] w-[206px] h-[51px] z-20 cursor-pointer" />
+        </PairingCard>
+
+        <Button className="h-12 rounded-[22px] border-white/70 bg-white/75 text-slate-700 hover:bg-white" variant="outline" onClick={() => navigate("/map")}>
+          Cancel
+        </Button>
+      </ScreenShell>
     </MapNavWrapper>
   );
 }
